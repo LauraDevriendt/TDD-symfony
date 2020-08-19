@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomepageController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ user }}! ✅</h1>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Premium</th>
+        </tr>
+        {% for room in rooms %}
+           <tr>
+               <td>{{ room.name }}</td>
+               <td>{{ room.onlyForPremiumMembers? "yes":"no" }}</td>
+           </tr>
+        {% endfor %}
+    </table>
+    <h2>Book a room (2 euro per Hour)</h2>
+    {# action:path('change-my-name') #}
+    {{ form_start(form,{method: 'POST'})}}
+    {{ form_widget(form) }}
+    <input type="submit" >
+    {{ form_end(form) }}
+</div>
+{% endblock %}
+
