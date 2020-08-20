@@ -45,7 +45,7 @@ class BookingPossible
 
     public function dateCheck(): ?bool
     {
-        if ($this->startDate < $this->endDate || $this->startDate != $this->endDate) {
+        if ($this->startDate < $this->endDate || $this->startDate != $this->endDate || $this->startDate< new \DateTime()) {
            return true;
         }
     }

@@ -18,18 +18,34 @@ class TimeslotsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $start = \DateTime::createFromFormat('H:i', '09:00');
+        $end = \DateTime::createFromFormat('H:i', '17:00');
+        $now = new \DateTime();
+
+        if($now < $start) {
+            $startDate = $start;
+            $endDate = $end;
+        } elseif ($now >= $start && $now <= $end) {
+            $startDate = $now;
+            $endDate = $end;
+        } elseif ($now > $end) {
+            $startDate = $start->add(new \DateInterval('P1D'));
+            $endDate = $end->add(new \DateInterval('P1D'));
+        }
 
         $builder
             ->add('startdate', DateTimeType::class, [
                 'date_label' => 'Starts at',
-                'years'=> range(2020,2025),
-                'hours'=> range(9,17),
+                'data'=> $startDate,
+                'years'=> range($now->format('Y'),(new \DateTime())->add(new \DateInterval('P5Y'))->format('Y')),
+                'hours'=> range($startDate->format('H'),$endDate->format('H')),
                 'minutes'=>[0,15,30,45]
             ])
             ->add('enddate', DateTimeType::class, [
                 'date_label' => 'Ends at',
-                'years'=> range(2020,2025),
-                'hours'=> range(9,17),
+                'data'=> $endDate,
+                'years'=> range($now->format('Y'),(new \DateTime())->add(new \DateInterval('P5Y'))->format('Y')),
+                'hours'=> range($startDate->format('H'),$endDate->format('H')),
                 'minutes'=>[0,15,30,45]
             ])
             ->add('room',EntityType::class, [
