@@ -111,7 +111,7 @@ class Room
             $user->getPremiumMember() === $this->getOnlyForPremiumMembers());
     }
 
-    public function isBooked(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate): bool
+    public function isNotBooked(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate): bool
     {
         if (!empty($this->getBookings()->toArray())) {
             $bookings = $this->getBookings()->toArray();
@@ -122,13 +122,13 @@ class Room
 
                 if ((($startDate >= $booking->getStartdate()) && ($startDate <= $booking->getEnddate()))
                     || (($endDate >= $booking->getStartdate()) && ($endDate <= $booking->getEnddate()))) {
-                    return true;
+                    return false;
 
                 }
             }
-            return false;
+            return true;
         }
-        return false;
+        return true;
     }
 
     public function checkMeetingDuration(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate): bool
@@ -137,10 +137,10 @@ class Room
         $hourLimit=4;
         $durationInMinutes=($endDate->getTimestamp() - $startDate->getTimestamp()) / $minutesInHour;
         if($durationInMinutes>$minutesInHour*$hourLimit){
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
 
 
     }

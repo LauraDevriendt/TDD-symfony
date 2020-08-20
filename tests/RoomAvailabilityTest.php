@@ -49,11 +49,11 @@ final class RoomAvailabilityTest extends TestCase
 
         $room->addBooking(new Bookings( $room, $user,$beginBooking, $endBooking));
         return [
-            [new Room(), $startDate,$endDate,false],
-            [ $room,$startDate, $endDate, false],
-            [ $room,$beginBooking, $badEndDate, true],
-            [ $room,$badStartDate, $endDate, true],
-            [ $room,$badStartDate, $badEndDate, true],
+            [new Room(), $startDate,$endDate,true],
+            [ $room,$startDate, $endDate, true],
+            [ $room,$beginBooking, $badEndDate, false],
+            [ $room,$badStartDate, $endDate, false],
+            [ $room,$badStartDate, $badEndDate, false],
         ];
     }
     /**
@@ -62,7 +62,7 @@ final class RoomAvailabilityTest extends TestCase
     // Room can only be booked if no other User has already booked it in the framework
     public function testRoomOccupied(Room $room,\DateTimeImmutable $startDate, \DateTimeImmutable $endDate, bool $expected){
 
-        self::assertEquals($expected, $room->isBooked($startDate,$endDate));
+        self::assertEquals($expected, $room->isNotBooked($startDate,$endDate));
 
     }
 
@@ -73,8 +73,8 @@ final class RoomAvailabilityTest extends TestCase
         $badEndBookig= $beginBooking->add(new DateInterval('P0Y0M0DT4H30M0S'));
 
         return [
-            [$beginBooking, $badEndBookig, true],
-            [$beginBooking, $endBooking, false],
+            [$beginBooking, $badEndBookig, false],
+            [$beginBooking, $endBooking, true],
 
         ];
     }

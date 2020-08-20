@@ -30,28 +30,31 @@ class Bookings
     private $User;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      */
     private $startdate;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime_immutable")
      */
     private $enddate;
 
     /**
      * Bookings constructor.
      * @param $room
-     * @param $User
-     * @param $startdate
-     * @param $enddate
+     * @param $user
+     * @param $startDate
+     * @param $endDate
      */
-    public function __construct($room, $User, $startdate, $enddate)
+    public function __construct(Room $room, User $user, \DateTimeImmutable $startDate, \DateTimeImmutable $endDate)
     {
         $this->room = $room;
-        $this->User = $User;
-        $this->startdate = $startdate;
-        $this->enddate = $enddate;
+        $this->User = $user;
+        $this->startdate = $startDate;
+        $this->enddate = $endDate;
+        $room->addBooking($this);
+        $user->addBooking($this);
+
     }
 
     public function getId(): ?int

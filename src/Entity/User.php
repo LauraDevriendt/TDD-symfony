@@ -199,4 +199,10 @@ class User implements UserInterface
         return true;
 
     }
+
+    public function Pay(\DateInterval $duration){
+        $costperHour=2;
+        $costperMinute=2/60;
+        $this->setCredit($this->getCredit()-($duration->h*$costperHour+$duration->i*$costperMinute));
+    }
 }

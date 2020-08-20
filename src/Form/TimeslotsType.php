@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Bookings;
+use App\Entity\Room;
 use App\Repository\RoomRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,6 +18,7 @@ class TimeslotsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
 
         $builder
             ->add('startdate', DateTimeType::class, [
@@ -30,11 +33,11 @@ class TimeslotsType extends AbstractType
                 'hours'=> range(9,17),
                 'minutes'=>[0,15,30,45]
             ])
-            ->add('room',ChoiceType::class, [
-                'choices'=>[
-                    'lamar'=>'lamar',
-                    'Gierts'=>'Gierts',
-                ]
+            ->add('room',EntityType::class, [
+                'class' => Room::class,
+
+                // uses the User.username property as the visible option string
+                'choice_label' => 'name',
             ])
             /*
              * ChoiceType::class, [

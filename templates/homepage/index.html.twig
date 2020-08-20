@@ -1,33 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomepageController!{% endblock %}
+{% block title %}Hello {{ user.email }}!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
 
-<div class="example-wrapper">
-    <h1>Hello {{ user }}! ✅</h1>
-    <table class="table">
-        <tr>
-            <th>Name</th>
-            <th>Premium</th>
-        </tr>
-        {% for room in rooms %}
-           <tr>
-               <td>{{ room.name }}</td>
-               <td>{{ room.onlyForPremiumMembers? "yes":"no" }}</td>
-           </tr>
-        {% endfor %}
-    </table>
-    <h2>Book a room (2 euro per Hour)</h2>
-    {# action:path('change-my-name') #}
-    {{ form_start(form,{method: 'POST'})}}
-    {{ form_widget(form) }}
-    <input type="submit" >
-    {{ form_end(form) }}
-</div>
+        .example-wrapper code {
+            background: #F5F5F5;
+            padding: 2px 6px;
+        }
+    </style>
+
+    <div class="example-wrapper">
+        <h1>Hello {{ user.email }}!</h1>
+        <div class="card">
+            <div class="card-body">
+                <p class="mb-0">Credit: {{ user.credit }} </p>
+
+            </div>
+        </div>
+        <section id="roomInfo" class="mb-2">
+            <h3 class="my-2">Room information</h3>
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Premium</th>
+                </tr>
+                {% for room in rooms %}
+                    <tr>
+                        <td>{{ room.name }}</td>
+                        <td>{{ room.onlyForPremiumMembers? "yes":"no" }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </section>
+      <section id="bookingInfo">
+          <h3 class="my-2">All made bookings</h3>
+          <table class="table">
+              <tr>
+                  <th>Room</th>
+                  <th>User</th>
+                  <th>Start</th>
+                  <th>End</th>
+              </tr>
+              {% for booking in bookings %}
+                  <tr>
+                      <td>{{ booking.room.name }}</td>
+                      <td>{{  booking.user.email }}</td>
+                      <td>{{  booking.startdate|date('Y-m-d h:i a') }}</td>
+                      <td>{{  booking.enddate|date('Y-m-d h:i a') }}</td>
+                  </tr>
+              {% endfor %}
+          </table>
+      </section>
+       <section id="bookRoom">
+           <h3 class="my-2">Book a room (2 euro per Hour)</h3>
+
+           {% for message in app.flashes('error') %}
+               <div class="alert alert-danger" role="alert">
+                   <strong>Oh snap!</strong> {{ message }}
+               </div>
+           {% endfor %}
+           {% for message in app.flashes('success') %}
+               <div class="alert alert-success" role="alert">
+                   <strong>Perfect!</strong> {{ message }}
+               </div>
+           {% endfor %}
+           {# action:path('change-my-name') #}
+           {{ form_start(form,{method: 'POST'}) }}
+           {{ form_widget(form) }}
+           <input type="submit">
+           {{ form_end(form) }}
+        </section>
+    </div>
+
 {% endblock %}
 
