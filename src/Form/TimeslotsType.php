@@ -19,7 +19,6 @@ class TimeslotsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-
         $builder
             ->add('startdate', DateTimeType::class, [
                 'date_label' => 'Starts at',

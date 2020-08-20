@@ -22,7 +22,7 @@
         <div class="card">
             <div class="card-body">
                 <p class="mb-0">Credit: {{ user.credit }} </p>
-
+                <a href="{{ path('credit') }}" class="btn btn-success">Recharge</a>
             </div>
         </div>
         <section id="roomInfo" class="mb-2">
@@ -31,34 +31,26 @@
                 <tr>
                     <th>Name</th>
                     <th>Premium</th>
+                    <th>Bookings</th>
                 </tr>
                 {% for room in rooms %}
-                    <tr>
-                        <td>{{ room.name }}</td>
-                        <td>{{ room.onlyForPremiumMembers? "yes":"no" }}</td>
+                <tr>
+                    <td>{{ room.name }}</td>
+                    <td>{{ room.onlyForPremiumMembers? "yes":"no" }}</td>
+                    <td>
+                        {%  for booking in bookings %}
+                        {% if booking.room.name is same as (room.name) %}
+                        <li>
+                            <span>{{ booking.user.email }}:</span><br>
+                            <span>{{ booking.startdate|date('Y-m-d h:i a') }} - {{ booking.enddate|date('Y-m-d h:i a') }}</span>
+                        </li>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
                     </tr>
                 {% endfor %}
             </table>
         </section>
-      <section id="bookingInfo">
-          <h3 class="my-2">All made bookings</h3>
-          <table class="table">
-              <tr>
-                  <th>Room</th>
-                  <th>User</th>
-                  <th>Start</th>
-                  <th>End</th>
-              </tr>
-              {% for booking in bookings %}
-                  <tr>
-                      <td>{{ booking.room.name }}</td>
-                      <td>{{  booking.user.email }}</td>
-                      <td>{{  booking.startdate|date('Y-m-d h:i a') }}</td>
-                      <td>{{  booking.enddate|date('Y-m-d h:i a') }}</td>
-                  </tr>
-              {% endfor %}
-          </table>
-      </section>
        <section id="bookRoom">
            <h3 class="my-2">Book a room (2 euro per Hour)</h3>
 

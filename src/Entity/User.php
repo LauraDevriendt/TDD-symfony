@@ -205,4 +205,10 @@ class User implements UserInterface
         $costperMinute=2/60;
         $this->setCredit($this->getCredit()-($duration->h*$costperHour+$duration->i*$costperMinute));
     }
+
+    public function canRecharge(){
+        if($this->getPremiumMember()){
+            return true;
+        }
+    }
 }
